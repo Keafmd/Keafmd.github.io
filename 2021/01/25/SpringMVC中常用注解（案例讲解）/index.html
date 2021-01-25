@@ -1,0 +1,396 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="Hexo">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://example.com">
+    <!--SEO-->
+
+<meta name="keywords" content="Keafmd" />
+
+
+<meta name="description" content="RequestParam说明
+
+==作用：==把请求中指定名称的参数给控制器中的形参赋值。==属性：==value：请求参数中的名称。required：请求参数中是否必须提供此参数。默认值：tr..." />
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+<title>
+    
+    SpringMVC中常用注解（案例讲解） |
+    
+    Hexo
+</title>
+
+<link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7.css">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash.css">
+
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='John Doe'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://example.com">
+                        Hexo</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                Home</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/前端/"><i class="fa "></i>
+                                前端</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/后端/"><i class="fa "></i>
+                                后端</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="SpringMVC中常用注解（案例讲解）">
+            
+            SpringMVC中常用注解（案例讲解）
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-none-link" href="/tags/Keafmd/" rel="tag">Keafmd</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2021/01/25</span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="RequestParam"><a href="#RequestParam" class="headerlink" title="RequestParam"></a>RequestParam</h1><p><font size =5><strong>说明</strong></font></p>
+<blockquote>
+<p><strong>==作用：==<br>把请求中指定名称的参数给控制器中的形参赋值。<br>==属性：==<br>value：请求参数中的名称。<br>required：请求参数中是否必须提供此参数。默认值：true。表示必须提供，如果不提供将报错。</strong></p>
+</blockquote>
+<p><font size =5><strong>代码示例</strong></font></p>
+<p>==<strong>jsp代码：</strong>==</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;%--</span><br><span class="line">  Created by IntelliJ IDEA.</span><br><span class="line">  User: Keafmd</span><br><span class="line">  Date: <span class="number">2021</span>/<span class="number">1</span>/<span class="number">25</span></span><br><span class="line">  Time: <span class="number">10</span>:<span class="number">48</span></span><br><span class="line">  To change <span class="keyword">this</span> template use File | Settings | File Templates.</span><br><span class="line">--%&gt;</span><br><span class="line">&lt;%@ page contentType=<span class="string">&quot;text/html;charset=UTF-8&quot;</span> language=<span class="string">&quot;java&quot;</span> %&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;title&gt;常用注解&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- requestParams 注解的使用 --&gt;</span><br><span class="line">    &lt;a href=&quot;anno/testRequestParam?name=keafmd&quot;&gt;RequestParam&lt;/a&gt;&lt;br/&gt;</span><br><span class="line"></span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<p>==<strong>控制器代码：</strong>==</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.Keafmd.controller;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.Keafmd.domain.User;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Controller;</span><br><span class="line"><span class="keyword">import</span> org.springframework.ui.Model;</span><br><span class="line"><span class="keyword">import</span> org.springframework.ui.ModelMap;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.*;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.support.SessionStatus;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Date;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Keafmd</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@ClassName</span>: AnnoConteoller</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>: 注解的控制器</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: 牛哄哄的柯南</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span>: 2021-01-25 10:50</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/anno&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AnnoConteoller</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * requestParams 注解的使用</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> username</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@RequestMapping(&quot;/testRequestParam&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">testRequestParam</span><span class="params">(<span class="meta">@RequestParam(value=&quot;name&quot;)</span> String username)</span></span>&#123;</span><br><span class="line">        <span class="comment">// @RequestParam(value=&quot;name&quot;) 必须传name,required：请求参数中是否必须提供此参数，默认值是true，必须提供</span></span><br><span class="line">        <span class="comment">// 获得当前类名</span></span><br><span class="line">        String clazz = Thread.currentThread().getStackTrace()[<span class="number">1</span>].getClassName();</span><br><span class="line">        <span class="comment">// 获得当前方法名</span></span><br><span class="line">        String method = Thread.currentThread().getStackTrace()[<span class="number">1</span>].getMethodName();</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;执行了：&quot;</span>+clazz+<span class="string">&quot; - &quot;</span>+method);</span><br><span class="line">        System.out.println(<span class="string">&quot;username:&quot;</span>+username);</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;success&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>==<strong>输出结果：</strong>==</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">执行了：com.Keafmd.controller.AnnoConteoller - testRequestParam</span><br><span class="line">username:keafmd</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>这样我们在href中传入name就会赋值给username。</strong></p>
+</blockquote>
+<h1 id="RequestBody"><a href="#RequestBody" class="headerlink" title="RequestBody"></a>RequestBody</h1><p><font size =5><strong>说明</strong></font></p>
+<blockquote>
+<p><strong>==作用：==<br>用于获取请求体内容。直接使用得到是 key=value&amp;key=value…结构的数据。<br>get 请求方式不适用。<br>==属性：==<br>required：是否必须有请求体。默认值是:true。当取值为 true 时,get 请求方式会报错。如果取值为 false，get 请求得到是 null。</strong></p>
+</blockquote>
+<p><font size =5><strong>代码示例</strong></font></p>
+<p>==<strong>jsp代码：</strong>==</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;form action=<span class="string">&quot;anno/testRequestBody&quot;</span> method=<span class="string">&quot;post&quot;</span>&gt;</span><br><span class="line">        用户姓名：&lt;input type=<span class="string">&quot;text&quot;</span> name=<span class="string">&quot;uname&quot;</span> /&gt;&lt;br/&gt;</span><br><span class="line">        用户年龄：&lt;input type=<span class="string">&quot;text&quot;</span> name=<span class="string">&quot;age&quot;</span> /&gt;&lt;br/&gt;</span><br><span class="line">        用户生日：&lt;input type=<span class="string">&quot;text&quot;</span> name=<span class="string">&quot;birthday&quot;</span> /&gt;&lt;br/&gt;</span><br><span class="line">        &lt;input type=<span class="string">&quot;submit&quot;</span> value=<span class="string">&quot;提交&quot;</span>&gt;</span><br><span class="line">&lt;/form&gt;</span><br></pre></td></tr></table></figure>
+<p>==<strong>控制器代码：</strong>==</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 获取到请求体的内容 RequestBody</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/testRequestBody&quot;)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">testRequestBody</span><span class="params">(<span class="meta">@RequestBody</span> String body)</span></span>&#123;</span><br><span class="line">    String method = Thread.currentThread().getStackTrace()[<span class="number">1</span>].getMethodName();</span><br><span class="line">    System.out.println(<span class="string">&quot;执行了：&quot;</span>+<span class="string">&quot; &quot;</span>+method);</span><br><span class="line">    System.out.println(<span class="string">&quot;body:&quot;</span>+body);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;success&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>==<strong>输出结果：</strong>==</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">执行了： testRequestBody</span><br><span class="line">body:uname=Keafmd&amp;age=<span class="number">21</span>&amp;birthday=<span class="number">2000</span>-<span class="number">01</span>-<span class="number">01</span></span><br></pre></td></tr></table></figure>
+<h1 id="PathVaribale"><a href="#PathVaribale" class="headerlink" title="PathVaribale"></a>PathVaribale</h1><h2 id="先了解下REST-风格-URL"><a href="#先了解下REST-风格-URL" class="headerlink" title="先了解下REST 风格 URL"></a>先了解下REST 风格 URL</h2><blockquote>
+<p><strong>REST（英文：Representational State Transfer，简称 REST）描述了一个架构样式的网络系统，比如 web 应用程序。值得注意的是 REST 并没有一个明确的标准，而更像是一种设计的风格。</strong><br><img src="https://img-blog.csdnimg.cn/20210125191242816.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80Mzg4MzkxNw==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+</blockquote>
+<p><font size =5><strong>说明</strong></font></p>
+<blockquote>
+<p><strong>==作用：==<br>用于绑定 url 中的占位符。例如：请求 url 中 /delete/{id}，这个{id}就是 url 占位符。<br>url 支持占位符是 spring3.0 之后加入的。是 springmvc 支持 rest 风格 URL 的一个重要标志。<br>==属性：==<br>value：用于指定 url 中占位符名称。<br>required：是否必须提供占位符。</strong></p>
+</blockquote>
+<p><font size =5><strong>代码示例</strong></font></p>
+<p>==<strong>jsp代码：</strong>==</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;anno/testPathVariable/10&quot;&gt;testPathVariable&lt;/a&gt;&lt;br/&gt;</span><br></pre></td></tr></table></figure>
+<p>==<strong>控制器代码：</strong>==</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* PathVariable</span></span><br><span class="line"><span class="comment">* <span class="doctag">@param</span> id</span></span><br><span class="line"><span class="comment">* <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/testPathVariable/&#123;sid&#125;&quot;)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">testPathVariable</span><span class="params">(<span class="meta">@PathVariable(name=&quot;sid&quot;)</span> String id)</span></span>&#123;</span><br><span class="line">   <span class="comment">// 获得当前方法名</span></span><br><span class="line">   String method = Thread.currentThread().getStackTrace()[<span class="number">1</span>].getMethodName();</span><br><span class="line">   System.out.println(<span class="string">&quot;执行了：&quot;</span>+<span class="string">&quot; &quot;</span>+method);</span><br><span class="line">   System.out.println(<span class="string">&quot;id:&quot;</span>+id);</span><br><span class="line">   <span class="keyword">return</span> <span class="string">&quot;success&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>==<strong>输出结果：</strong>==</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">执行了： testPathVariable</span><br><span class="line">id:<span class="number">10</span></span><br></pre></td></tr></table></figure>
+<h1 id="RequestHeader"><a href="#RequestHeader" class="headerlink" title="RequestHeader"></a>RequestHeader</h1><p><font size =5><strong>说明</strong></font></p>
+<blockquote>
+<p><strong>==作用：==<br>用于获取请求消息头。<br>==属性：==<br>value：提供消息头名称<br>required：是否必须有此消息头<br>==提示：==<br>在实际开发中一般不常用</strong></p>
+</blockquote>
+<p><font size =5><strong>代码示例</strong></font></p>
+<p>==<strong>jsp代码：</strong>==</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;anno/testRequestHeader&quot;&gt;testRequestHeader&lt;/a&gt;&lt;br/&gt;</span><br></pre></td></tr></table></figure>
+<p>==<strong>控制器代码：</strong>==</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* RequestHeader获取请求头的值  不常用</span></span><br><span class="line"><span class="comment">* <span class="doctag">@param</span> head</span></span><br><span class="line"><span class="comment">* <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/testRequestHeader&quot;)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">testRequestHeader</span><span class="params">(<span class="meta">@RequestHeader(value = &quot;Accept&quot;)</span> String head)</span></span>&#123;</span><br><span class="line">   <span class="comment">// 获得当前方法名</span></span><br><span class="line">   String method = Thread.currentThread().getStackTrace()[<span class="number">1</span>].getMethodName();</span><br><span class="line">   System.out.println(<span class="string">&quot;执行了：&quot;</span>+<span class="string">&quot; &quot;</span>+method);</span><br><span class="line"></span><br><span class="line">   System.out.println(<span class="string">&quot;head:&quot;</span>+head);</span><br><span class="line">   <span class="keyword">return</span> <span class="string">&quot;success&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>==<strong>输出结果：</strong>==</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">执行了： testRequestHeader</span><br><span class="line">head:text/html,application/xhtml+xml,application/xml;q=<span class="number">0.9</span>,image/webp,image/apng,*<span class="comment">/*;q=0.8,application/signed-exchange;v=b3</span></span><br></pre></td></tr></table></figure>
+<h1 id="CookieValue"><a href="#CookieValue" class="headerlink" title="CookieValue"></a>CookieValue</h1><p><font size =5><strong>说明</strong></font></p>
+<blockquote>
+<p><strong>==作用：==<br>用于把指定 cookie 名称的值传入控制器方法参数。<br>==属性：==<br>value：指定 cookie 的名称。<br>required：是否必须有此 cookie。</strong></p>
+</blockquote>
+<p><font size =5><strong>代码示例</strong></font></p>
+<p>==<strong>jsp代码：</strong>==</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;anno/testCookieValue&quot;&gt;testCookValue&lt;/a&gt;&lt;br/&gt;</span><br></pre></td></tr></table></figure>
+<p>==<strong>控制器代码：</strong>==</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * CookieValue 不常用</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> cookievalue</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/testCookieValue&quot;)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">testCookieValue</span><span class="params">(<span class="meta">@CookieValue(value = &quot;JSESSIONID&quot;)</span> String cookievalue)</span></span>&#123;</span><br><span class="line">    <span class="comment">// 获得当前方法名</span></span><br><span class="line">    String method = Thread.currentThread().getStackTrace()[<span class="number">1</span>].getMethodName();</span><br><span class="line">    System.out.println(<span class="string">&quot;执行了：&quot;</span>+<span class="string">&quot; &quot;</span>+method);</span><br><span class="line"></span><br><span class="line">    System.out.println(<span class="string">&quot;cookievalue:&quot;</span>+cookievalue);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;success&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>==<strong>输出结果：</strong>==</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">执行了： testCookieValue</span><br><span class="line">cookievalue:DCCFE2C1F975AC04D4F55973ADA5C89C</span><br></pre></td></tr></table></figure>
+<h1 id="ModelAttribute"><a href="#ModelAttribute" class="headerlink" title="ModelAttribute"></a>ModelAttribute</h1><p><font size =5><strong>说明</strong></font></p>
+<blockquote>
+<p><strong>==作用：==<br>该注解是 SpringMVC4.3 版本以后新加入的。它可以用于修饰方法和参数。<br>出现在方法上，表示==当前方法会在控制器的方法执行之前，先执行==。它可以修饰没有返回值的方法，也可以修饰有具体返回值的方法。<br>出现在参数上，获取指定的数据给参数赋值。<br>==属性：==<br>value：用于获取数据的 key。key 可以是 POJO 的属性名称，也可以是 map 结构的 key。<br>==应用场景：==<br>当表单提交数据不是完整的实体类数据时，保证没有提交数据的字段使用数据库对象原来的数据。</strong></p>
+</blockquote>
+<p><font size =5><strong>代码示例</strong></font></p>
+<p>==<strong>jsp代码：</strong>==</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;form action=<span class="string">&quot;anno/testModelAttribute&quot;</span> method=<span class="string">&quot;post&quot;</span>&gt;</span><br><span class="line">	用户姓名：&lt;input type=<span class="string">&quot;text&quot;</span> name=<span class="string">&quot;uname&quot;</span> /&gt;&lt;br/&gt;</span><br><span class="line">    用户年龄：&lt;input type=<span class="string">&quot;text&quot;</span> name=<span class="string">&quot;age&quot;</span> /&gt;&lt;br/&gt;</span><br><span class="line">    &lt;input type=<span class="string">&quot;submit&quot;</span> value=<span class="string">&quot;提交&quot;</span>&gt;</span><br><span class="line">&lt;/form&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="修饰的方法有返回值"><a href="#修饰的方法有返回值" class="headerlink" title="修饰的方法有返回值"></a>修饰的方法有返回值</h2><p>==<strong>控制器代码：</strong>==</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * ModelAttribute</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/testModelAttribute&quot;)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">testModelAttribute</span><span class="params">(User user)</span></span>&#123;</span><br><span class="line">    <span class="comment">// 获得当前方法名</span></span><br><span class="line">    String method = Thread.currentThread().getStackTrace()[<span class="number">1</span>].getMethodName();</span><br><span class="line">    System.out.println(<span class="string">&quot;执行了：&quot;</span>+<span class="string">&quot; &quot;</span>+method);</span><br><span class="line">    System.out.println(user);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;success&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//有返回值</span></span><br><span class="line"><span class="meta">@ModelAttribute</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> User <span class="title">showUser</span><span class="params">(String uname)</span></span>&#123;</span><br><span class="line">    String method = Thread.currentThread().getStackTrace()[<span class="number">1</span>].getMethodName();</span><br><span class="line">    System.out.println(<span class="string">&quot;执行了：&quot;</span>+<span class="string">&quot; &quot;</span>+method);</span><br><span class="line">    User user = <span class="keyword">new</span> User();</span><br><span class="line">    user.setUname(uname);</span><br><span class="line">    user.setAge(<span class="number">20</span>);</span><br><span class="line">    user.setBirthday(<span class="keyword">new</span> Date());</span><br><span class="line">    <span class="keyword">return</span> user;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>==<strong>输出结果：</strong>==</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">执行了： testModelAttribute</span><br><span class="line">User&#123;uname=<span class="string">&#x27;牛哄哄的柯南&#x27;</span>, age=<span class="number">21</span>, birthday=Mon Jan <span class="number">25</span> <span class="number">19</span>:<span class="number">34</span>:<span class="number">46</span> CST <span class="number">2021</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="修饰的方法没有返回值"><a href="#修饰的方法没有返回值" class="headerlink" title="修饰的方法没有返回值"></a>修饰的方法没有返回值</h2><blockquote>
+<p><strong>==注意==：没有返回值的时候利用Map把参数传回去，testModelAttribute的参数User前加上@ModelAttribute(“abc”)接收Map传回的数据。</strong></p>
+</blockquote>
+<p>==<strong>控制器代码：</strong>==</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * ModelAttribute</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/testModelAttribute&quot;)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">testModelAttribute</span><span class="params">(<span class="meta">@ModelAttribute(&quot;abc&quot;)</span>User user)</span></span>&#123;</span><br><span class="line">    <span class="comment">// 获得当前方法名</span></span><br><span class="line">    String method = Thread.currentThread().getStackTrace()[<span class="number">1</span>].getMethodName();</span><br><span class="line">    System.out.println(<span class="string">&quot;执行了：&quot;</span>+<span class="string">&quot; &quot;</span>+method);</span><br><span class="line">    System.out.println(user);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;success&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//无返回值</span></span><br><span class="line"><span class="meta">@ModelAttribute</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">showUser</span><span class="params">(String uname, Map&lt;String,User&gt; map)</span></span>&#123;</span><br><span class="line">    String method = Thread.currentThread().getStackTrace()[<span class="number">1</span>].getMethodName();</span><br><span class="line">    System.out.println(<span class="string">&quot;执行了：&quot;</span>+<span class="string">&quot; &quot;</span>+method);</span><br><span class="line">    User user = <span class="keyword">new</span> User();</span><br><span class="line">    user.setUname(uname);</span><br><span class="line">    user.setAge(<span class="number">20</span>);</span><br><span class="line">    user.setBirthday(<span class="keyword">new</span> Date());</span><br><span class="line">    map.put(<span class="string">&quot;abc&quot;</span>,user);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>==<strong>输出结果：</strong>==</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">执行了： testModelAttribute</span><br><span class="line">User&#123;uname=<span class="string">&#x27;牛哄哄的柯南&#x27;</span>, age=<span class="number">21</span>, birthday=Mon Jan <span class="number">25</span> <span class="number">19</span>:<span class="number">32</span>:<span class="number">20</span> CST <span class="number">2021</span>&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="SessionAttribute"><a href="#SessionAttribute" class="headerlink" title="SessionAttribute"></a>SessionAttribute</h1><p><font size =5><strong>说明</strong></font></p>
+<blockquote>
+<p><strong>==作用：==<br>用于多次执行控制器方法间的参数共享。<br>==属性：==<br>value：用于指定存入的属性名称<br>type：用于指定存入的数据类型。</strong></p>
+</blockquote>
+<p><font size =5><strong>代码示例</strong></font></p>
+<p>==<strong>jsp代码：</strong>==</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;anno/testSessionAttributes&quot;&gt;存入SessionAttributes&lt;/a&gt;&lt;br/&gt;</span><br><span class="line">&lt;a href=&quot;anno/getSessionAttributes&quot;&gt;获取SessionAttributes&lt;/a&gt;&lt;br/&gt;</span><br><span class="line">&lt;a href=&quot;anno/delSessionAttributes&quot;&gt;清除SessionAttributes&lt;/a&gt;&lt;br/&gt;</span><br></pre></td></tr></table></figure>
+<p>==<strong>控制器代码：</strong>==</p>
+<blockquote>
+<p><strong>注意：需要在类的上面添加<code>@SessionAttributes(value = &#123;&quot;msg&quot;&#125;) //把msg=牛哄哄的柯南存到session域中</code>。</strong></p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.Keafmd.controller;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.Keafmd.domain.User;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Controller;</span><br><span class="line"><span class="keyword">import</span> org.springframework.ui.Model;</span><br><span class="line"><span class="keyword">import</span> org.springframework.ui.ModelMap;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.*;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.support.SessionStatus;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Date;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Keafmd</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@ClassName</span>: AnnoConteoller</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>: 注解的控制器</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: 牛哄哄的柯南</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span>: 2021-01-25 10:50</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/anno&quot;)</span></span><br><span class="line"><span class="meta">@SessionAttributes(value = &#123;&quot;msg&quot;&#125;)</span> <span class="comment">//把msg=牛哄哄的柯南存到session域中</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AnnoConteoller</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * SessionAttributes注解，存入msg</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@RequestMapping(&quot;/testSessionAttributes&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">testSessionAttributes</span><span class="params">(Model model)</span></span>&#123;</span><br><span class="line">        <span class="comment">// 获得当前方法名</span></span><br><span class="line">        String method = Thread.currentThread().getStackTrace()[<span class="number">1</span>].getMethodName();</span><br><span class="line">        System.out.println(<span class="string">&quot;执行了：&quot;</span>+<span class="string">&quot; &quot;</span>+method);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//底层会存到Request域中</span></span><br><span class="line">        model.addAttribute(<span class="string">&quot;msg&quot;</span>,<span class="string">&quot;牛哄哄的柯南&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;success&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> modelMap</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@RequestMapping(&quot;/getSessionAttributes&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getSessionAttributes</span><span class="params">(ModelMap modelMap)</span></span>&#123;</span><br><span class="line">        <span class="comment">// 获得当前方法名</span></span><br><span class="line">        String method = Thread.currentThread().getStackTrace()[<span class="number">1</span>].getMethodName();</span><br><span class="line">        System.out.println(<span class="string">&quot;执行了：&quot;</span>+<span class="string">&quot; &quot;</span>+method);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//从session域中取出来</span></span><br><span class="line">        String msg = (String)modelMap.get(<span class="string">&quot;msg&quot;</span>);</span><br><span class="line">        System.out.println(msg);</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;success&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 清除</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> sessionStatus</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@RequestMapping(&quot;/delSessionAttributes&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">delSessionAttributes</span><span class="params">(SessionStatus sessionStatus)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 获得当前方法名</span></span><br><span class="line">        String method = Thread.currentThread().getStackTrace()[<span class="number">1</span>].getMethodName();</span><br><span class="line">        System.out.println(<span class="string">&quot;执行了：&quot;</span>+<span class="string">&quot; &quot;</span>+method);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//从session域中清除</span></span><br><span class="line">        sessionStatus.setComplete();</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;success&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>依次点击存入-&gt;获取-&gt;清除-&gt;获取。</strong></p>
+</blockquote>
+<p>==<strong>输出结果：</strong>==</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">执行了： testSessionAttributes</span><br><span class="line">执行了： getSessionAttributes</span><br><span class="line">牛哄哄的柯南</span><br><span class="line">执行了： delSessionAttributes</span><br><span class="line">执行了： getSessionAttributes</span><br><span class="line"><span class="keyword">null</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>在success.jsp可以通过<code>$&#123;msg&#125;和$&#123;sessionScope&#125;</code>获取到在类上面把msg存入到session域的内容：<code>牛哄哄的柯南和&#123;msg=牛哄哄的柯南&#125;</code></strong><br><strong>在success.jsp可以通过<code>$&#123;requestScope&#125;</code>获取到在testSessionAttributes方法中存入Request域中的内容。</strong></p>
+</blockquote>
+<blockquote>
+<p><strong>以上就是SpringMVC中常用注解（案例讲解）的全部内容。</strong></p>
+</blockquote>
+
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="" target="_blank">Snippet</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    
+    <a href="/2021/01/25/hello-world/" class="next-post btn btn-default" title='Hello World'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Hello World</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'xOKV9J4UeQAtVkvnJC7Kq2Jn-gzGzoHsz',
+    appKey: 'erIpQac4azoCmgfBB7Dl9maa',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'en'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            Table of Contents
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#RequestParam"><span class="toc-text">RequestParam</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#RequestBody"><span class="toc-text">RequestBody</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#PathVaribale"><span class="toc-text">PathVaribale</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%88%E4%BA%86%E8%A7%A3%E4%B8%8BREST-%E9%A3%8E%E6%A0%BC-URL"><span class="toc-text">先了解下REST 风格 URL</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#RequestHeader"><span class="toc-text">RequestHeader</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CookieValue"><span class="toc-text">CookieValue</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ModelAttribute"><span class="toc-text">ModelAttribute</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%AE%E9%A5%B0%E7%9A%84%E6%96%B9%E6%B3%95%E6%9C%89%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="toc-text">修饰的方法有返回值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%AE%E9%A5%B0%E7%9A%84%E6%96%B9%E6%B3%95%E6%B2%A1%E6%9C%89%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="toc-text">修饰的方法没有返回值</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SessionAttribute"><span class="toc-text">SessionAttribute</span></a></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2017
+                    
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script src="/js/app.js?rev=@@hash.js"></script>
+
+</body>
+</html>
