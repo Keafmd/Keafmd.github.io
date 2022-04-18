@@ -6,7 +6,7 @@
   <link href="https://keafmd.top/atom.xml" rel="self"/>
   
   <link href="https://keafmd.top/"/>
-  <updated>2022-04-12T04:11:08.911Z</updated>
+  <updated>2022-04-18T06:49:40.330Z</updated>
   <id>https://keafmd.top/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>使用LamdbaUpdateWrapper的setSql作用及风险</title>
+    <link href="https://keafmd.top/2022/04/12/%E4%BD%BF%E7%94%A8LamdbaUpdateWrapper%E7%9A%84setSql%E4%BD%9C%E7%94%A8%E5%8F%8A%E9%A3%8E%E9%99%A9/"/>
+    <id>https://keafmd.top/2022/04/12/%E4%BD%BF%E7%94%A8LamdbaUpdateWrapper%E7%9A%84setSql%E4%BD%9C%E7%94%A8%E5%8F%8A%E9%A3%8E%E9%99%A9/</id>
+    <published>2022-04-12T10:10:34.000Z</published>
+    <updated>2022-04-18T06:49:40.330Z</updated>
+    
+    <content type="html"><![CDATA[        <h1 id="问题引入"   >          <a href="#问题引入" class="heading-link"><i class="fas fa-link"></i></a><a href="#问题引入" class="headerlink" title="问题引入"></a>问题引入</h1>      <blockquote><p>先思考下：我们要对数据库里面的某条数据进行更新，并且想要在某个字段原先的基础上修改，我们怎么办？</p></blockquote><a id="more"></a><blockquote><p>正常的情况下，我们需要先查出来再更新，可就是想直接更新，那就需要去Mapper中写sql，就为了一个字段感觉费劲，在这种情况下使用LamdbaUpdateWrapper的setSql()方法即可。</p></blockquote><figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//把num字段加5</span></span><br><span class="line">LambdaUpdateWrapper&lt;User&gt; updateWrapper = Wrappers.&lt;User&gt;lambdaUpdate()</span><br><span class="line">.eq(User::getId, userId)</span><br><span class="line">.setSql(<span class="string">&quot;count = count + 5&quot;</span>);</span><br><span class="line"></span><br><span class="line">userService.update(updateWrapper);</span><br></pre></td></tr></table></div></figure><p>BUT，这样就会存在可能有风险，主要还是为了测试mybatis-plus，是否进行的防范，经过测试，并没有。</p><p>比如就使用最常见的 sleep()，把这部分加到sql段中 <code>+ sleep(5)</code></p><figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">LambdaUpdateWrapper&lt;User&gt; updateWrapper = Wrappers.&lt;User&gt;lambdaUpdate()</span><br><span class="line">                .eq(User::getId, userId)</span><br><span class="line">                .setSql(<span class="string">&quot;count = count + 5 + sleep(5)&quot;</span>);</span><br></pre></td></tr></table></div></figure><p><img src="https://cdn.jsdelivr.net/gh/Keafmd/drawing-bed/img/image-20220418143531438.png" alt="image-20220418143531438"></p><p>不过话说回来，这也就是开发人员能接触到的，只是证明mybatis-plus并没有对setSql()进行过滤，是采取直接拼上去的方式。</p>        <h1 id="每日单词"   >          <a href="#每日单词" class="heading-link"><i class="fas fa-link"></i></a><a href="#每日单词" class="headerlink" title="每日单词"></a>每日单词</h1>      <p><img src="https://cdn.jsdelivr.net/gh/Keafmd/drawing-bed/img/image-20220418144928906.png" alt="image-20220418144928906"></p>]]></content>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;问题引入&quot;   &gt;
+          &lt;a href=&quot;#问题引入&quot; class=&quot;heading-link&quot;&gt;&lt;i class=&quot;fas fa-link&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;a href=&quot;#问题引入&quot; class=&quot;headerlink&quot; title=&quot;问题引入&quot;&gt;&lt;/a&gt;问题引入&lt;/h1&gt;
+      &lt;blockquote&gt;
+&lt;p&gt;先思考下：我们要对数据库里面的某条数据进行更新，并且想要在某个字段原先的基础上修改，我们怎么办？&lt;/p&gt;
+&lt;/blockquote&gt;</summary>
+    
+    
+    
+    
+    <category term="java" scheme="https://keafmd.top/tags/java/"/>
+    
+  </entry>
   
   <entry>
     <title>最小差值（附加单词积累）</title>
