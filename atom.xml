@@ -6,7 +6,7 @@
   <link href="https://keafmd.top/atom.xml" rel="self"/>
   
   <link href="https://keafmd.top/"/>
-  <updated>2022-04-18T07:20:25.556Z</updated>
+  <updated>2022-04-19T01:55:06.697Z</updated>
   <id>https://keafmd.top/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>组合总和-Leetcode</title>
+    <link href="https://keafmd.top/2022/04/19/%E7%BB%84%E5%90%88%E6%80%BB%E5%92%8C-Leetcode/"/>
+    <id>https://keafmd.top/2022/04/19/%E7%BB%84%E5%90%88%E6%80%BB%E5%92%8C-Leetcode/</id>
+    <published>2022-04-19T01:47:00.000Z</published>
+    <updated>2022-04-19T01:55:06.697Z</updated>
+    
+    <content type="html"><![CDATA[        <h1 id="每日题目"   >          <a href="#每日题目" class="heading-link"><i class="fas fa-link"></i></a><a href="#每日题目" class="headerlink" title="每日题目"></a>每日题目</h1>      <p>题目：<span class="exturl"><a class="exturl__link"   href="https://leetcode-cn.com/problems/combination-sum/" >组合总和</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p><blockquote><p>给你一个 无重复元素 的整数数组 candidates 和一个目标整数 target ，找出 candidates 中可以使数字和为目标数 target 的 所有 不同组合 ，并以列表形式返回。你可以按 任意顺序 返回这些组合。</p><p>candidates 中的 同一个 数字可以 无限制重复被选取 。如果至少一个数字的被选数量不同，则两种组合是不同的。 </p><p>对于给定的输入，保证和为 target 的不同组合数少于 150 个。</p></blockquote><a id="more"></a><p>示例：</p><blockquote><p>示例 1：</p><p>输入：candidates = [2,3,6,7], target = 7<br>输出：[[2,2,3],[7]]<br>解释：<br>2 和 3 可以形成一组候选，2 + 2 + 3 = 7 。注意 2 可以使用多次。<br>7 也是一个候选， 7 = 7 。<br>仅有这两种组合。</p><p>示例 2：</p><p>输入: candidates = [2,3,5], target = 8<br>输出: [[2,2,2,2],[2,3,3],[3,5]]</p><p>示例 3：</p><p>输入: candidates = [2], target = 1<br>输出: []</p></blockquote><blockquote><p>提示：</p><p>1 &lt;= candidates.length &lt;= 30<br>1 &lt;= candidates[i] &lt;= 200<br>candidate 中的每个元素都 互不相同<br>1 &lt;= target &lt;= 500</p></blockquote><p><strong>代码：</strong></p><figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> List&lt;List&lt;Integer&gt;&gt; combinationSum(<span class="keyword">int</span>[] candidates, <span class="keyword">int</span> target) &#123;</span><br><span class="line">        List&lt;List&lt;Integer&gt;&gt; res =  <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="comment">//如果数组为空，直接返回空结果</span></span><br><span class="line">        <span class="keyword">if</span>(candidates==<span class="keyword">null</span>||candidates.length==<span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> res;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//先排序</span></span><br><span class="line">        Arrays.sort(candidates);</span><br><span class="line">        <span class="comment">//dfs</span></span><br><span class="line">        dfs(candidates,target,<span class="number">0</span>,<span class="keyword">new</span> ArrayList&lt;&gt;(),res);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span>[] candidates,<span class="keyword">int</span> target ,<span class="keyword">int</span> start,List&lt;Integer&gt; list,List&lt;List&lt;Integer&gt;&gt; res)</span></span>&#123;</span><br><span class="line">        <span class="comment">//如果目标值为0，说明已经找到一个组合，添加到结果集中</span></span><br><span class="line">        <span class="keyword">if</span>(target==<span class="number">0</span>)&#123;</span><br><span class="line">            res.add(<span class="keyword">new</span> ArrayList&lt;&gt;(list));</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//遍历数组</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = start; i &lt; candidates.length; i++) &#123;</span><br><span class="line">            <span class="comment">//如果当前值大于目标值，则不需要继续遍历</span></span><br><span class="line">            <span class="keyword">if</span>(candidates[i]&gt;target)&#123;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            list.add(candidates[i]);</span><br><span class="line">            <span class="comment">//更新目标值和起始位置</span></span><br><span class="line">            dfs(candidates,target-candidates[i],i,list,res);</span><br><span class="line">            <span class="comment">//回溯,删除当前值</span></span><br><span class="line">            list.remove(list.size()-<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>        <h1 id="每日单词"   >          <a href="#每日单词" class="heading-link"><i class="fas fa-link"></i></a><a href="#每日单词" class="headerlink" title="每日单词"></a>每日单词</h1>      <p><img src="https://cdn.jsdelivr.net/gh/Keafmd/drawing-bed/img/image-20220419095327903.png" alt="image-20220419095327903"></p>]]></content>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;每日题目&quot;   &gt;
+          &lt;a href=&quot;#每日题目&quot; class=&quot;heading-link&quot;&gt;&lt;i class=&quot;fas fa-link&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;a href=&quot;#每日题目&quot; class=&quot;headerlink&quot; title=&quot;每日题目&quot;&gt;&lt;/a&gt;每日题目&lt;/h1&gt;
+      &lt;p&gt;题目：&lt;span class=&quot;exturl&quot;&gt;&lt;a class=&quot;exturl__link&quot;   href=&quot;https://leetcode-cn.com/problems/combination-sum/&quot; &gt;组合总和&lt;/a&gt;&lt;span class=&quot;exturl__icon&quot;&gt;&lt;i class=&quot;fas fa-external-link-alt&quot;&gt;&lt;/i&gt;&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;给你一个 无重复元素 的整数数组 candidates 和一个目标整数 target ，找出 candidates 中可以使数字和为目标数 target 的 所有 不同组合 ，并以列表形式返回。你可以按 任意顺序 返回这些组合。&lt;/p&gt;
+&lt;p&gt;candidates 中的 同一个 数字可以 无限制重复被选取 。如果至少一个数字的被选数量不同，则两种组合是不同的。 &lt;/p&gt;
+&lt;p&gt;对于给定的输入，保证和为 target 的不同组合数少于 150 个。&lt;/p&gt;
+&lt;/blockquote&gt;</summary>
+    
+    
+    
+    
+    <category term="每天进步一点点系列" scheme="https://keafmd.top/tags/%E6%AF%8F%E5%A4%A9%E8%BF%9B%E6%AD%A5%E4%B8%80%E7%82%B9%E7%82%B9%E7%B3%BB%E5%88%97/"/>
+    
+  </entry>
   
   <entry>
     <title>计算器</title>
