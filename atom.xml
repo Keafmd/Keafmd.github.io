@@ -6,7 +6,7 @@
   <link href="https://keafmd.top/atom.xml" rel="self"/>
   
   <link href="https://keafmd.top/"/>
-  <updated>2022-04-24T05:42:05.028Z</updated>
+  <updated>2022-04-24T08:13:18.348Z</updated>
   <id>https://keafmd.top/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>work【解决方案】</title>
+    <link href="https://keafmd.top/2022/04/24/clion%E4%B8%ADcpp%E6%96%87%E4%BB%B6%E6%98%BE%E7%A4%BAThis%20file%20does%20not%20belong%20to%20any%20project%20%EF%BC%8Ccode%20insight%20features%20might%20not%20work%E3%80%90%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E3%80%91/"/>
+    <id>https://keafmd.top/2022/04/24/clion%E4%B8%ADcpp%E6%96%87%E4%BB%B6%E6%98%BE%E7%A4%BAThis%20file%20does%20not%20belong%20to%20any%20project%20%EF%BC%8Ccode%20insight%20features%20might%20not%20work%E3%80%90%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E3%80%91/</id>
+    <published>2022-04-24T08:11:19.000Z</published>
+    <updated>2022-04-24T08:13:18.348Z</updated>
+    
+    <content type="html"><![CDATA[        <h1 id="问题"   >          <a href="#问题" class="heading-link"><i class="fas fa-link"></i></a><a href="#问题" class="headerlink" title="问题"></a>问题</h1>      <p>cpp文件上方出现<br><code>This file does not belong to any project ，code insight features might not work properly</code>，并且main函数无法运行<br><img src="https://img-blog.csdnimg.cn/1b60aaf08e6b4a988cca8a192be06a93.png" alt="在这里插入图片描述"></p><a id="more"></a>        <h1 id="解决方案"   >          <a href="#解决方案" class="heading-link"><i class="fas fa-link"></i></a><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1>              <h2 id="第一步：修改下CMakeLists-txt文件"   >          <a href="#第一步：修改下CMakeLists-txt文件" class="heading-link"><i class="fas fa-link"></i></a><a href="#第一步：修改下CMakeLists-txt文件" class="headerlink" title="第一步：修改下CMakeLists.txt文件"></a>第一步：修改下CMakeLists.txt文件</h2>      <p>为了以后方便，我们先修改下CMakeLists.txt文件<br><img   src="https://img-blog.csdnimg.cn/7530aa84b8764a65862ddfd13ba7c7b2.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA54mb5ZOE5ZOE55qE5p-v5Y2X,size_20,color_FFFFFF,t_70,g_se,x_16" style="width: image/watermark,type_d3F5LXplbmhlaQ,shadow_50,tepx;height: t_Q1NETiBA54mb5ZOE5ZOE55qE5p-v5Y2X,size_20,color_FFFFFF,t_70,g_se,px;"  alt="在这里插入图片描述"><br><strong>CMakeLists.txt：</strong></p><figure class="highlight cpp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 遍历项目根目录下所有的 .cpp 文件</span><br><span class="line">file (GLOB_RECURSE files *.cpp)</span><br><span class="line">foreach (file $&#123;files&#125;)</span><br><span class="line">    <span class="built_in">string</span>(REGEX REPLACE <span class="string">&quot;.+/(.+)\\..*&quot;</span> <span class="string">&quot;\\1&quot;</span> exe $&#123;file&#125;)</span><br><span class="line">    add_executable ($&#123;exe&#125; $&#123;file&#125;)</span><br><span class="line">    message (\ \ \ \ --\ src/$&#123;exe&#125;.cpp\ will\ be\ compiled\ to\ bin/$&#123;exe&#125;)</span><br><span class="line">endforeach ()</span><br></pre></td></tr></table></div></figure><blockquote><p><strong>这样以后就不用再修改CMakeLists.txt这个文件了。</strong></p></blockquote>        <h2 id="第二步：重新加载下项目"   >          <a href="#第二步：重新加载下项目" class="heading-link"><i class="fas fa-link"></i></a><a href="#第二步：重新加载下项目" class="headerlink" title="第二步：重新加载下项目"></a>第二步：重新加载下项目</h2>      <p><img   src="https://img-blog.csdnimg.cn/b5b821740a284b0ab0ec3836a1067291.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA54mb5ZOE5ZOE55qE5p-v5Y2X,size_20,color_FFFFFF,t_70,g_se,x_16" style="width: image/watermark,type_d3F5LXplbmhlaQ,shadow_50,tepx;height: t_Q1NETiBA54mb5ZOE5ZOE55qE5p-v5Y2X,size_20,color_FFFFFF,t_70,g_se,px;"  alt="在这里插入图片描述"></p><blockquote><p><strong>加载完成后main函数就可以执行了，及时cpp文件上方还有那句话也不影响。</strong></p></blockquote><p><img   src="https://img-blog.csdnimg.cn/933a865697274b85971e81f4a86c2a31.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA54mb5ZOE5ZOE55qE5p-v5Y2X,size_20,color_FFFFFF,t_70,g_se,x_16" style="width: image/watermark,type_d3F5LXplbmhlaQ,shadow_50,tepx;height: t_Q1NETiBA54mb5ZOE5ZOE55qE5p-v5Y2X,size_20,color_FFFFFF,t_70,g_se,px;"  alt="在这里插入图片描述"></p><blockquote><p><strong>以上就是clion中cpp文件显示This file does not belong to any project ，code insight features might not work【解决方案】的全部内容</strong></p></blockquote><blockquote><p><strong>版权声明：</strong><br><strong>原创博主：牛哄哄的柯南</strong><br><strong>博主原文链接：<a href="https://keafmd.top/">https://keafmd.top/</a></strong></p></blockquote><p><strong>看完如果对你有帮助</strong></p><p><strong>加油！</strong></p><p><strong>共同努力！</strong></p><p><strong>Keafmd</strong></p>]]></content>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;问题&quot;   &gt;
+          &lt;a href=&quot;#问题&quot; class=&quot;heading-link&quot;&gt;&lt;i class=&quot;fas fa-link&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;a href=&quot;#问题&quot; class=&quot;headerlink&quot; title=&quot;问题&quot;&gt;&lt;/a&gt;问题&lt;/h1&gt;
+      &lt;p&gt;cpp文件上方出现&lt;br&gt;&lt;code&gt;This file does not belong to any project ，code insight features might not work properly&lt;/code&gt;，并且main函数无法运行&lt;br&gt;&lt;img src=&quot;https://img-blog.csdnimg.cn/1b60aaf08e6b4a988cca8a192be06a93.png&quot; alt=&quot;在这里插入图片描述&quot;&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="帮学妹解决问题" scheme="https://keafmd.top/tags/%E5%B8%AE%E5%AD%A6%E5%A6%B9%E8%A7%A3%E5%86%B3%E9%97%AE%E9%A2%98/"/>
+    
+  </entry>
   
   <entry>
     <title>买卖股票的最佳时机</title>
