@@ -1,0 +1,457 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/keafmd-16x16.png?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/keafmd-32x32.png?v=2.6.2" type="image/png" sizes="32x32"><meta name="description" content="需求引入        题外话：这种标题网上一搜全是，我为啥还写这篇文章，一是作为笔记，二是可能不同人遇到的问题不一样，处理方案也不同，我多发一篇，就帮助读这篇文章的你多一种部署成功的情况。 这个时候最多的是部署毕设吧，今天有朋友问我，我就整理成一篇文章供大家参考。  需求很简单，就是想把自己写的前后端分离的项目部署到Linux服务器上，我们要准备啥，首先就是前后端分离的一个">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux部署前后端分离项目（SpringBoot+Vue）【Nginx部署】">
+<meta property="og:url" content="https://keafmd.top/2022/04/26/Linux%E9%83%A8%E7%BD%B2%E5%89%8D%E5%90%8E%E7%AB%AF%E5%88%86%E7%A6%BB%E9%A1%B9%E7%9B%AE%EF%BC%88SpringBoot-Vue%EF%BC%89%E3%80%90Nginx%E9%83%A8%E7%BD%B2%E3%80%91/index.html">
+<meta property="og:site_name" content="Keafmd&#39;s Blog">
+<meta property="og:description" content="需求引入        题外话：这种标题网上一搜全是，我为啥还写这篇文章，一是作为笔记，二是可能不同人遇到的问题不一样，处理方案也不同，我多发一篇，就帮助读这篇文章的你多一种部署成功的情况。 这个时候最多的是部署毕设吧，今天有朋友问我，我就整理成一篇文章供大家参考。  需求很简单，就是想把自己写的前后端分离的项目部署到Linux服务器上，我们要准备啥，首先就是前后端分离的一个">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Keafmd/drawing-bed/img/202204261746333.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Keafmd/drawing-bed/img/202204261749220.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Keafmd/drawing-bed/img/202204261757250.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Keafmd/drawing-bed/img/202204261852044.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Keafmd/drawing-bed/img/202204261927243.png">
+<meta property="article:published_time" content="2022-04-26T09:27:50.000Z">
+<meta property="article:modified_time" content="2022-04-26T11:32:49.588Z">
+<meta property="article:author" content="牛哄哄的柯南">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="SpringBoot">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="Nginx">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/Keafmd/drawing-bed/img/202204261746333.png"><title>Linux部署前后端分离项目（SpringBoot+Vue）【Nginx部署】 | Keafmd's Blog</title><link ref="canonical" href="https://keafmd.top/2022/04/26/Linux%E9%83%A8%E7%BD%B2%E5%89%8D%E5%90%8E%E7%AB%AF%E5%88%86%E7%A6%BB%E9%A1%B9%E7%9B%AE%EF%BC%88SpringBoot-Vue%EF%BC%89%E3%80%90Nginx%E9%83%A8%E7%BD%B2%E3%80%91/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><link rel="dns-prefetch" href="https://hm.baidu.com"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement('script');
+  hm.src = 'https://hm.baidu.com/hm.js?93b1a37f7679d6000ceb53125e07cb2a';
+  hm.async = true;
+
+  if (false) {
+    hm.setAttribute('data-pjax', '');
+  }
+  var s = document.getElementsByTagName('script')[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: true,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/atom.xml" title="Keafmd's Blog" type="application/atom+xml">
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-feather-alt"></i></span><span class="header-nav-menu-item__text">文章</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/archives/"><span class="header-nav-submenu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-submenu-item__text">归档</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/categories/"><span class="header-nav-submenu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-submenu-item__text">分类</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/tags/"><span class="header-nav-submenu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-submenu-item__text">标签</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-fingerprint"></i></span><span class="header-nav-menu-item__text">关于</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/author/"><span class="header-nav-submenu-item__icon"><i class="fas fa-user-alt"></i></span><span class="header-nav-submenu-item__text">作者</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/reprinted/"><span class="header-nav-submenu-item__icon"><i class="fas fa-share-square"></i></span><span class="header-nav-submenu-item__text">转载</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/heart/"><span class="header-nav-menu-item__icon"><i class="fas fa-book"></i></span><span class="header-nav-menu-item__text">随心语</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-compass"></i></span><span class="header-nav-menu-item__text">其它</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/photo/"><span class="header-nav-submenu-item__icon"><i class="fas fa-images"></i></span><span class="header-nav-submenu-item__text">相册</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/link/"><span class="header-nav-submenu-item__icon"><i class="fas fa-map-signs"></i></span><span class="header-nav-submenu-item__text">链接</span></a></div></div></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">Keafmd's Blog</div><div class="header-banner-info__subtitle">write code and love life</div></div><div class="header-banner-arrow"><div class="header-banner-arrow__icon"><i class="fas fa-angle-down"></i></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">Linux部署前后端分离项目（SpringBoot+Vue）【Nginx部署】</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-04-26</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-04-26</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="far fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">1.3k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="far fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">9分</span></span><span class="post-meta-item post-meta-item--visitors"><span class="post-meta-item__icon"><i class="fas fa-eye"></i></span><span class="post-meta-item__info">阅读次数</span><span class="post-meta-item__value" id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body">
+        <h1 id="需求引入"   >
+          <a href="#需求引入" class="heading-link"><i class="fas fa-link"></i></a><a href="#需求引入" class="headerlink" title="需求引入"></a>需求引入</h1>
+      <blockquote>
+<p>题外话：这种标题网上一搜全是，我为啥还写这篇文章，一是作为笔记，二是可能不同人遇到的问题不一样，处理方案也不同，我多发一篇，就帮助读这篇文章的你多一种部署成功的情况。</p>
+<p>这个时候最多的是部署毕设吧，今天有朋友问我，我就整理成一篇文章供大家参考。</p>
+</blockquote>
+<p>需求很简单，就是想把自己写的前后端分离的项目部署到Linux服务器上，我们要准备啥，首先就是前后端分离的一个项目，其次一个安装好nginx和jdk的服务器，我相信你也都有了，才看到这篇文章的，来吧，跟着开始。</p>
+<p>Linux安装jdk可以看我的这篇文章：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43883917/article/details/117256094" >学妹跑过来抱着我的胳膊让我帮她在Linux上装jdk【手把手教学】</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<a id="more"></a>
+
+
+        <h1 id="步骤"   >
+          <a href="#步骤" class="heading-link"><i class="fas fa-link"></i></a><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h1>
+      
+        <h2 id="1、对前端项目的baseURL进行修改"   >
+          <a href="#1、对前端项目的baseURL进行修改" class="heading-link"><i class="fas fa-link"></i></a><a href="#1、对前端项目的baseURL进行修改" class="headerlink" title="1、对前端项目的baseURL进行修改"></a>1、对前端项目的baseURL进行修改</h2>
+      <p>  82是你想在服务器那个端口访问这个项目，自己根据情况更改，XXXX是自己的服务器ip</p>
+<p>加个api是为了后面在nginx处理，随便写，不一样非要是api，后面nginx中对应上就行</p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; baseURL: &#39;http:&#x2F;&#x2F;127.0.0.1:8082&#x2F;pethospital&#x2F;&#39;,</span><br><span class="line">baseURL: &#39;http:&#x2F;&#x2F;XXXX:82&#x2F;api&#x2F;pethospital&#x2F;&#39;,</span><br></pre></td></tr></table></div></figure>
+<p><img src="https://cdn.jsdelivr.net/gh/Keafmd/drawing-bed/img/202204261746333.png" alt="image-20220426174636615"></p>
+
+        <h2 id="2、打包前端项目"   >
+          <a href="#2、打包前端项目" class="heading-link"><i class="fas fa-link"></i></a><a href="#2、打包前端项目" class="headerlink" title="2、打包前端项目"></a>2、打包前端项目</h2>
+      <p>在前端项目所在目录的控制台执行<code>npm run build</code></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Keafmd/drawing-bed/img/202204261749220.png" alt="image-20220426174930105"></p>
+<p>然后就会在项目的根目录下生成 <code>dist</code> 文件夹，一会再用。</p>
+
+        <h2 id="3、打包后端项目"   >
+          <a href="#3、打包后端项目" class="heading-link"><i class="fas fa-link"></i></a><a href="#3、打包后端项目" class="headerlink" title="3、打包后端项目"></a>3、打包后端项目</h2>
+      <p>注意点说一下，打成jar包（其它什么包都行）但是后面步骤就不同了，就跟着打jar包即可，在pom.xml中加上<code>spring-boot-maven-plugin</code></p>
+<figure class="highlight xml"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">packaging</span>&gt;</span>jar<span class="tag">&lt;/<span class="name">packaging</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></div></figure>
+
+
+<blockquote>
+<p>控制台执行<code>mvn clean install -Dmaven.test.skip=true</code>，打包同时抛弃测试用例。</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/Keafmd/drawing-bed/img/202204261757250.png" alt="image-20220426175717713"></p>
+<p>打包完成后，在target目录下就会出现一个jar包，留着下一步用，还有上面的前端的dist文件夹。</p>
+
+        <h2 id="4、把jar包和dist文件夹上传的服务器"   >
+          <a href="#4、把jar包和dist文件夹上传的服务器" class="heading-link"><i class="fas fa-link"></i></a><a href="#4、把jar包和dist文件夹上传的服务器" class="headerlink" title="4、把jar包和dist文件夹上传的服务器"></a>4、把jar包和dist文件夹上传的服务器</h2>
+      <p><strong>用什么工具都行xftp或MobaXterm，为了能跟着搞成，我下面说的可能很细，嫌弃多余跳着看即可，有基础的根据自己情况变更都可以，没经验的就跟着来，至少能成功。</strong></p>
+<p>在服务器根目录下创建个 文件夹存放 <code>mkdir pet</code>，然后把jar包和dist文件夹都移动到这里就行</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Keafmd/drawing-bed/img/202204261852044.png" alt="image-20220426185159386"></p>
+
+        <h2 id="5、修改nginx的配置文件"   >
+          <a href="#5、修改nginx的配置文件" class="heading-link"><i class="fas fa-link"></i></a><a href="#5、修改nginx的配置文件" class="headerlink" title="5、修改nginx的配置文件"></a>5、修改nginx的配置文件</h2>
+      <p>我的配置文件目录在 <code>/etc/nginx</code>（cd /etc/nginx），编辑<code>nginx.conf</code>文件（vim nginx.conf），因为我的里面配置了其它的内容，我都粘贴出来看起来可能更复杂，我截取重点粘出来。</p>
+<p>设置个跳转路径 ，相当于<code> ip地址/pet</code> 跳转到 <code>IP地址:82端口</code>，这一步不配置也行，直接访问82端口也行。</p>
+<blockquote>
+<p>:zero: 此处请 <font color=red >注意</font> ：提前把服务器的82端口打开</p>
+</blockquote>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">            listen 80;</span><br><span class="line">                #填写绑定证书的域名</span><br><span class="line">                server_name XXXX;</span><br><span class="line">				...</span><br><span class="line">				</span><br><span class="line">              location &#x2F;pet &#123;</span><br><span class="line">                  rewrite ^&#x2F;(.*) http:&#x2F;&#x2F;XXXX:82;</span><br><span class="line">              &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></div></figure>
+
+
+<blockquote>
+<p>:one:<font color = red>注意</font> ：配置到这就把服务器对应的后端项目对应的端口打开，我的后端设置的8083端口</p>
+<p>两个注意点：</p>
+<p><code># 这里就是 dist 的文件位置 root /pet/dist;</code></p>
+<p><code># 这里端口对应后端端口 proxy_pass http://XXXX:8083;</code></p>
+</blockquote>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">http&#123;</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">    listen 82;</span><br><span class="line">    server_name pet;</span><br><span class="line"></span><br><span class="line">    location &#x2F; &#123;</span><br><span class="line">        # 这里就是 dist 的文件位置</span><br><span class="line">        root &#x2F;pet&#x2F;dist;</span><br><span class="line">        index index.html;</span><br><span class="line">        proxy_ssl_session_reuse off;</span><br><span class="line">        try_files  $uri $uri&#x2F; &#x2F;index.html;</span><br><span class="line">    &#125;</span><br><span class="line">    #拦截&#x2F;api&#x2F;请求，因为所有的请求在前端被处理成 &#39;&#x2F;api+后端接口&#39;形式</span><br><span class="line">    location &#x2F;api&#x2F; &#123;</span><br><span class="line">        #开启重写日志记录，这个会记录在error.log里面，级别为notice</span><br><span class="line">        rewrite_log on;</span><br><span class="line">        #重写规则，可根据实际情况调整。</span><br><span class="line">        rewrite ^.+api&#x2F;?(.*)$ &#x2F;$1 break;</span><br><span class="line">        # 这里端口对应后端端口</span><br><span class="line">        proxy_pass http:&#x2F;&#x2F;XXXX:8083;</span><br><span class="line">        proxy_redirect    off;</span><br><span class="line">        proxy_set_header  Host $host;</span><br><span class="line">        proxy_set_header  X-real-ip $remote_addr;</span><br><span class="line">        proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></div></figure>
+
+
+<p><strong>执行下面两步：</strong></p>
+<p>校验配置文件：<code>nginx -t</code></p>
+<p>重启gninx：<code>nginx -s reload</code></p>
+
+        <h2 id="6、启动后端项目"   >
+          <a href="#6、启动后端项目" class="heading-link"><i class="fas fa-link"></i></a><a href="#6、启动后端项目" class="headerlink" title="6、启动后端项目"></a>6、启动后端项目</h2>
+      <p>切换到 <code>/pet</code> 目录下</p>
+<p>启动命令：</p>
+<p><code>nohup java -Dfile.encoding=utf-8 -jar pet-hospital-0.0.1-SNAPSHOT.jar &gt;&gt; log  2&gt;&amp;1 &amp;</code></p>
+<p>用nohup可以在窗口关闭时，使程序继续运行，我们也可以写个启动的脚本，这样重启起来方便</p>
+<blockquote>
+<p>先 <code>vim startPet.sh</code> 编辑脚本</p>
+</blockquote>
+<figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">pid=(`ps -ef | grep pet | grep -v grep | awk <span class="string">&#x27;&#123;print $2&#125;&#x27;</span>`)</span><br><span class="line"><span class="keyword">if</span> [ -n <span class="variable">$pid</span> ]</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line"> <span class="built_in">echo</span> <span class="string">&quot;is null&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line"> ps -ef | grep pet | grep -v grep | awk <span class="string">&#x27;&#123;print $2&#125;&#x27;</span> | xargs <span class="built_in">kill</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">nohup java -Dfile.encoding=utf-8 -jar pet-hospital-0.0.1-SNAPSHOT.jar &gt;&gt; <span class="built_in">log</span>  2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></div></figure>
+<blockquote>
+<p>在变成可执行命令：<code>chmod +x startPet.sh</code></p>
+</blockquote>
+<blockquote>
+<p>在执行： <code>./startPet.sh</code> （启动或重启）</p>
+</blockquote>
+<p>这样就会参生log和nohup.out文件了，</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Keafmd/drawing-bed/img/202204261927243.png" alt="image-20220426192659050"></p>
+
+        <h2 id="7、日志查看"   >
+          <a href="#7、日志查看" class="heading-link"><i class="fas fa-link"></i></a><a href="#7、日志查看" class="headerlink" title="7、日志查看"></a>7、日志查看</h2>
+      <p>看倒数n行 ： <code>tail -n 100 log</code></p>
+<p>一直查看： <code>tail -f log</code></p>
+<p>看下日志后端没问题，基本就是搞定了</p>
+<p>浏览器访问：<code>服务器ip/pet</code> 就可以访问看到项目的界面了</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://Keafmd.top">牛哄哄的柯南</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://keafmd.top/2022/04/26/Linux%E9%83%A8%E7%BD%B2%E5%89%8D%E5%90%8E%E7%AB%AF%E5%88%86%E7%A6%BB%E9%A1%B9%E7%9B%AE%EF%BC%88SpringBoot-Vue%EF%BC%89%E3%80%90Nginx%E9%83%A8%E7%BD%B2%E3%80%91/">https://keafmd.top/2022/04/26/Linux%E9%83%A8%E7%BD%B2%E5%89%8D%E5%90%8E%E7%AB%AF%E5%88%86%E7%A6%BB%E9%A1%B9%E7%9B%AE%EF%BC%88SpringBoot-Vue%EF%BC%89%E3%80%90Nginx%E9%83%A8%E7%BD%B2%E3%80%91/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://keafmd.top/tags/Linux/">Linux</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://keafmd.top/tags/SpringBoot/">SpringBoot</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://keafmd.top/tags/Vue/">Vue</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://keafmd.top/tags/Nginx/">Nginx</a></span></div><div class="post-reward reward"><div class="reward-button">请我喝杯咖啡~</div><div class="reward-qrcode"><span class="reward-qrcode-alipay"><img class="reward-qrcode-alipay__img" src="/images/weixinmoney.jpg"><div class="reward-qrcode-alipay__text">支付宝打赏</div></span><span class="reward-qrcode-wechat"><img class="reward-qrcode-wechat__img" src="/images/weixinmoney.jpg"><div class="reward-qrcode-wechat__text">微信打赏</div></span></div></div><nav class="post-paginator paginator"><div class="paginator-next"><a class="paginator-next__link" href="/2022/04/25/%E9%AA%8C%E8%AF%81%E5%9B%9E%E6%96%87%E4%B8%B2/"><span class="paginator-prev__text">验证回文串</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="utterances-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%9C%80%E6%B1%82%E5%BC%95%E5%85%A5"><span class="toc-number">1.</span> <span class="toc-text">
+          需求引入</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4"><span class="toc-number">2.</span> <span class="toc-text">
+          步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81%E5%AF%B9%E5%89%8D%E7%AB%AF%E9%A1%B9%E7%9B%AE%E7%9A%84baseURL%E8%BF%9B%E8%A1%8C%E4%BF%AE%E6%94%B9"><span class="toc-number">2.1.</span> <span class="toc-text">
+          1、对前端项目的baseURL进行修改</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81%E6%89%93%E5%8C%85%E5%89%8D%E7%AB%AF%E9%A1%B9%E7%9B%AE"><span class="toc-number">2.2.</span> <span class="toc-text">
+          2、打包前端项目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81%E6%89%93%E5%8C%85%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE"><span class="toc-number">2.3.</span> <span class="toc-text">
+          3、打包后端项目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4%E3%80%81%E6%8A%8Ajar%E5%8C%85%E5%92%8Cdist%E6%96%87%E4%BB%B6%E5%A4%B9%E4%B8%8A%E4%BC%A0%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-number">2.4.</span> <span class="toc-text">
+          4、把jar包和dist文件夹上传的服务器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5%E3%80%81%E4%BF%AE%E6%94%B9nginx%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">2.5.</span> <span class="toc-text">
+          5、修改nginx的配置文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6%E3%80%81%E5%90%AF%E5%8A%A8%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE"><span class="toc-number">2.6.</span> <span class="toc-text">
+          6、启动后端项目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7%E3%80%81%E6%97%A5%E5%BF%97%E6%9F%A5%E7%9C%8B"><span class="toc-number">2.7.</span> <span class="toc-text">
+          7、日志查看</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/Keafmd.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">写代码，热爱生活</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/Keafmd/" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://keafmd.blog.csdn.net/" target="_blank" rel="noopener" data-popover="social.CSDN" data-popover-pos="up"><span class="sidebar-ov-social-item__icon">C</span></a><a class="sidebar-ov-social-item" href="tencent://message?uin=674155030" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2020~2022</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>牛哄哄的柯南 All Rights Reserved</span><span class="footer__devider">|</span><span><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">京ICP备2021028928号-1</a></span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.3.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.6.2</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__info">访问人数</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__info">浏览总量</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="搜索文章（支持多关键词，请用空格分隔）"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1.0.1/dist/canvas-nest.min.js" color="0,0,0" opacity="0.6" count="99" zIndex="-1"></script><script>function initSearch() {
+  var isXML = true;
+  var search_path = 'search.json';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
+  }
+
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        // 将 XML 转为 JSON
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+      // 搜索对象（标题、内容）的权重，影响显示顺序
+      var WEIGHT = { title: 100, content: 1 };
+      var searchPost = function () {
+        var searchText = $input.val().toLowerCase().trim();
+        // 根据空白字符分隔关键字
+        var keywords = searchText.split(/[\s]+/);
+        // 搜索结果
+        var matchPosts = [];
+
+        // 有多个关键字时，将原文字整个保存下来
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        // 防止未输入字符时搜索
+        if (searchText.length > 0) {
+          datas.forEach(function (data) {
+            var isMatch  = false;
+            // 没有标题的文章使用预设的 i18n 变量代替
+            var title = (data.title && data.title.trim()) || '[ 文章无标题 ]';
+            var titleLower = title && title.toLowerCase();
+            // 删除 HTML 标签 和 所有空白字符
+            var content = data.content && data.content.replace(/<[^>]+>/g, '');
+            var contentLower = content && content.toLowerCase();
+            // 删除重复的 /
+            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
+            // 标题中匹配到的关键词
+            var titleHitSlice = [];
+            // 内容中匹配到的关键词
+            var contentHitSlice = [];
+
+            keywords.forEach(function (keyword) {
+              /**
+              * 获取匹配的关键词的索引
+              * @param {String} keyword 要匹配的关键字
+              * @param {String} text 原文字
+              * @param {Boolean} caseSensitive 是否区分大小写
+              * @param {Number} weight 匹配对象的权重。权重大的优先显示
+              * @return {Array}
+              */
+              function getIndexByword (word, text, caseSensitive, weight) {
+                if (!word || !text) {
+                  return [];
+                };
+
+                var startIndex = 0; // 每次匹配的开始索引
+                var index = -1;     // 匹配到的索引值
+                var result = [];    // 匹配结果
+
+                if (!caseSensitive) {
+                  word = word.toLowerCase();
+                  text = text.toLowerCase();
+                }
+
+                while((index = text.indexOf(word, startIndex)) !== -1) {
+                  var hasMatch = false;
+                  // 索引位置相同的关键词，保留长度较长的
+                  titleHitSlice.forEach(function (hit) {
+                    if (hit.index === index && hit.word.length < word.length) {
+                      hit.word = word;
+                      hasMatch = true;
+                    }
+                  });
+                  startIndex = index + word.length;
+                  !hasMatch && result.push({ index: index, word: word, weight: weight });
+                }
+                return result;
+              }
+              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
+              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
+            });
+
+            var hitTitle = titleHitSlice.length;
+            var hitContent = contentHitSlice.length;
+
+            if (hitTitle > 0 || hitContent > 0) {
+              isMatch = true;
+            }
+            if (isMatch) {
+              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                // 按照匹配文字的索引的递增顺序排序
+                hit.sort(function (left, right) {
+                  return left.index - right.index;
+                });
+              });
+              /**
+              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+              * @param {String} text 原文本
+              * @param {Array} hitSlice 匹配项的索引信息
+              * @param {Number} start 开始索引
+              * @param {Number} end 结束索引
+              * @return {String}
+              */
+              function highlightKeyword (text, hitSlice, start, end) {
+                if (!text || !hitSlice || !hitSlice.length) {
+                  return;
+                }
+
+                var result = '';
+                var startIndex = start;
+                var endIndex = end;
+                hitSlice.forEach(function (hit) {
+                  if (hit.index < startIndex) {
+                    return;
+                  }
+
+                  var hitWordEnd = hit.index + hit.word.length;
+                  result += text.slice(startIndex, hit.index);
+                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                  startIndex = hitWordEnd;
+                });
+                result += text.slice(startIndex, endIndex);
+                return result;
+              }
+
+              var postData = {};
+              // 文章总的搜索权重
+              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
+              // 标记匹配关键词后的标题
+              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+              // 标记匹配关键词后的内容
+              var postContent;
+              // 显示内容的长度
+              var SHOW_WORD_LENGTH = 200;
+              // 命中关键词前的字符显示长度
+              var SHOW_WORD_FRONT_LENGTH = 20;
+              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
+
+              // 截取匹配的第一个字符，前后共 200 个字符来显示
+              if (contentHitSlice.length > 0) {
+                var firstIndex = contentHitSlice[0].index;
+                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
+                var end = firstIndex + SHOW_WORD_END_LENGTH;
+                postContent = highlightKeyword(content, contentHitSlice, start, end);
+              } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                postContent = content.slice(0, SHOW_WORD_LENGTH);
+              }
+              postData.title = postTitle;
+              postData.content = postContent;
+              postData.url = postURL;
+              postData.weight = postWeight;
+              matchPosts.push(postData);
+            }
+          });
+        }
+
+        var resultInnerHtml = '';
+        if (matchPosts.length) {
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          resultInnerHtml += '<ul>';
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+        } else {
+          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
+        }
+        $result.html(resultInnerHtml);
+      };
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
+        }
+      });
+    }
+  });
+}
+
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
+      e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
+    });
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      // Escape <=> 27
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
+      }
+    });
+  };
+
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);
+
+function safeOpenUrl(url) {
+  var newTab = window.open();
+  newTab.opener = null;
+  newTab.location = url;
+}
+
+function extSearch(engine) {
+  var engines = {
+    google: 'https://www.google.com/search?q=',
+    bing: 'https://cn.bing.com/search?q=',
+    baidu: 'https://www.baidu.com/s?ie=UTF-8&wd=',
+  };
+  var host = window.location.host;
+  var query = $('.search-input input').val().toLowerCase().trim();
+  var uri = engines[engine] + query + ' site:' + host;
+
+  if (query) {
+    safeOpenUrl(uri);
+  } else {
+    Stun.utils.popAlert('warning', '请输入字符');
+  }
+}
+
+var assistSearchList = window.CONFIG.assistSearch;
+
+if (Array.isArray(assistSearchList)) {
+  assistSearchList.forEach(function (name) {
+    document.querySelector('.search-btns-item--' + name).addEventListener('click', function () {
+      extSearch(name);
+    }, false);
+  });
+}</script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script>function loadUtterances() {
+  var d = document, s = d.createElement('script');
+  var container = d.getElementById('utterances-container');
+
+  if (!container) {
+    return;
+  }
+  s.src = 'https://utteranc.es/client.js';
+  s.setAttribute('repo', 'Keafmd/blog-comment');
+  s.setAttribute('issue-term', 'title');
+  s.setAttribute('label', 'utterances');
+  s.setAttribute('theme', 'github-light');
+  s.setAttribute('crossorigin', 'anonymous');
+  s.setAttribute('async', '');
+  if (false) {
+    s.setAttribute('data-pjax-rm', '');
+  }
+  container.append(s);
+}
+
+if (false) {
+  loadUtterances();
+} else {
+  window.addEventListener('DOMContentLoaded', loadUtterances, false);
+}</script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script><script type="application/json" src="/search.json"></script></body></html>
