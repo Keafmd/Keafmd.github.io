@@ -6,7 +6,7 @@
   <link href="https://keafmd.top/atom.xml" rel="self"/>
   
   <link href="https://keafmd.top/"/>
-  <updated>2022-08-09T08:15:47.734Z</updated>
+  <updated>2022-08-24T11:32:51.613Z</updated>
   <id>https://keafmd.top/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>树的子结构</title>
+    <link href="https://keafmd.top/2022/08/24/%E6%A0%91%E7%9A%84%E5%AD%90%E7%BB%93%E6%9E%84/"/>
+    <id>https://keafmd.top/2022/08/24/%E6%A0%91%E7%9A%84%E5%AD%90%E7%BB%93%E6%9E%84/</id>
+    <published>2022-08-24T11:30:14.000Z</published>
+    <updated>2022-08-24T11:32:51.613Z</updated>
+    
+    <content type="html"><![CDATA[<div id="readmore-container">        <h1 id="树的子结构"   >          <a href="#树的子结构" class="heading-link"><i class="fas fa-link"></i></a><a href="#树的子结构" class="headerlink" title="树的子结构"></a>树的子结构</h1>              <h3 id="【题目】剑指-Offer-26-树的子结构"   >          <a href="#【题目】剑指-Offer-26-树的子结构" class="heading-link"><i class="fas fa-link"></i></a><a href="#【题目】剑指-Offer-26-树的子结构" class="headerlink" title="【题目】剑指 Offer 26. 树的子结构"></a>【题目】<span class="exturl"><a class="exturl__link"   href="https://leetcode.cn/problems/shu-de-zi-jie-gou-lcof/" >剑指 Offer 26. 树的子结构</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></h3>      <p>输入两棵二叉树A和B，判断B是不是A的子结构。(约定空树不是任意一个树的子结构)</p><p>B是A的子结构， 即 A中有出现和B相同的结构和节点值。</p><a id="more"></a><p>例如:<br>给定的树 A:</p><figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">    <span class="number">3</span></span><br><span class="line">   / \</span><br><span class="line">  <span class="number">4</span>   <span class="number">5</span></span><br><span class="line"> / \</span><br><span class="line"><span class="number">1</span>   <span class="number">2</span> <span class="number">3</span></span><br></pre></td></tr></table></div></figure><p>给定的树 B：</p><figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">  <span class="number">4</span> </span><br><span class="line"> /</span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></div></figure><p>返回 true，因为 B 与 A 的一个子树拥有相同的结构和节点值。</p><p>示例 1：</p><p>输入：A = [1,2,3], B = [3,1]<br>输出：false<br>示例 2：</p><p>输入：A = [3,4,5,1,2], B = [4,1]<br>输出：true</p>        <h3 id="【要求】"   >          <a href="#【要求】" class="heading-link"><i class="fas fa-link"></i></a><a href="#【要求】" class="headerlink" title="【要求】"></a>【要求】</h3>      <blockquote><p>0 &lt;= 节点个数 &lt;= 10000</p></blockquote>        <h3 id="【思路】"   >          <a href="#【思路】" class="heading-link"><i class="fas fa-link"></i></a><a href="#【思路】" class="headerlink" title="【思路】"></a>【思路】</h3>      <p>若树 B 是树 A 的子结构，则子结构的根节点可能为树 A的任意一个节点。因此，判断树 B 是否是树 A 的子结构，需完成以下两步工作：</p><p>1、先序遍历树 A中的每个节点 N（对应函数 isSubStructure(A, B)）<br>2、判断树 A 中 以 N 为根节点的子树 是否包含树 B 。（对应函数 dfs(A, B)）</p>        <h3 id="【代码】"   >          <a href="#【代码】" class="heading-link"><i class="fas fa-link"></i></a><a href="#【代码】" class="headerlink" title="【代码】"></a>【代码】</h3>      <figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * public class TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     TreeNode left;</span></span><br><span class="line"><span class="comment"> *     TreeNode right;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int x) &#123; val = x; &#125;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isSubStructure</span><span class="params">(TreeNode A, TreeNode B)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 当树A为空或树B为空时，直接返回false</span></span><br><span class="line">        <span class="keyword">if</span>(A == <span class="keyword">null</span> || B == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        <span class="comment">//递归比较，遍历让每个节点为根节点</span></span><br><span class="line">        <span class="keyword">return</span> dfs(A, B) || isSubStructure(A.left, B) || isSubStructure(A.right, B);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">dfs</span><span class="params">(TreeNode A, TreeNode B)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// B的节点可以为空 证明已经全在A内了</span></span><br><span class="line">        <span class="keyword">if</span>(B == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        <span class="comment">// A不能为空，说明A不能全包含B</span></span><br><span class="line">        <span class="keyword">if</span>(A == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        <span class="keyword">return</span> A.val == B.val &amp;&amp; dfs(A.left, B.left) &amp;&amp; dfs(A.right, B.right);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure><blockquote><p><strong>版权声明：</strong><br><strong>原创博主：牛哄哄的柯南</strong><br><strong>博主原文链接：<span class="exturl"><a class="exturl__link"   href="https://keafmd.blog.csdn.net/" >https://keafmd.blog.csdn.net/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span><br>个人博客链接：<span class="exturl"><a class="exturl__link"   href="https://www.keafmd.top/" >https://www.keafmd.top/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></strong></p></blockquote><p><strong>看完如果对你有帮助，感谢点击下面的点赞支持！<br>[哈哈][抱拳]</strong><br><img src="https://img-blog.csdnimg.cn/20201023201048810.gif#pic_center" alt="在这里插入图片描述"><br><strong>加油！</strong></p><p><strong>共同努力！</strong></p><p><strong>Keafmd</strong></p></div><script src="https://qiniu.techgrow.cn/js/readmore.js" type="text/javascript"></script><script>var isMobile = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i);if (!isMobile) {try {var plugin = new ReadmorePlugin();plugin.init({"id": "readmore-container","blogId": "63908-3467185019870-067","name": "牛哄哄的柯南","qrcode": "https://img-blog.csdnimg.cn/57e716984422402281cef814553b2ae9.png#pic_center","keyword": "柯南","lockToc": "yes","random": "1"});} catch(e) {console.warn(e.name + " : " + e.message);}}</script>]]></content>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;树的子结构&quot;   &gt;
+          &lt;a href=&quot;#树的子结构&quot; class=&quot;heading-link&quot;&gt;&lt;i class=&quot;fas fa-link&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;a href=&quot;#树的子结构&quot; class=&quot;headerlink&quot; title=&quot;树的子结构&quot;&gt;&lt;/a&gt;树的子结构&lt;/h1&gt;
+      
+        &lt;h3 id=&quot;【题目】剑指-Offer-26-树的子结构&quot;   &gt;
+          &lt;a href=&quot;#【题目】剑指-Offer-26-树的子结构&quot; class=&quot;heading-link&quot;&gt;&lt;i class=&quot;fas fa-link&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;a href=&quot;#【题目】剑指-Offer-26-树的子结构&quot; class=&quot;headerlink&quot; title=&quot;【题目】剑指 Offer 26. 树的子结构&quot;&gt;&lt;/a&gt;【题目】&lt;span class=&quot;exturl&quot;&gt;&lt;a class=&quot;exturl__link&quot;   href=&quot;https://leetcode.cn/problems/shu-de-zi-jie-gou-lcof/&quot; &gt;剑指 Offer 26. 树的子结构&lt;/a&gt;&lt;span class=&quot;exturl__icon&quot;&gt;&lt;i class=&quot;fas fa-external-link-alt&quot;&gt;&lt;/i&gt;&lt;/span&gt;&lt;/span&gt;&lt;/h3&gt;
+      &lt;p&gt;输入两棵二叉树A和B，判断B是不是A的子结构。(约定空树不是任意一个树的子结构)&lt;/p&gt;
+&lt;p&gt;B是A的子结构， 即 A中有出现和B相同的结构和节点值。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="LeetCode" scheme="https://keafmd.top/tags/LeetCode/"/>
+    
+  </entry>
   
   <entry>
     <title>常用注解：让生产力爆表！</title>
@@ -524,35 +549,6 @@
     
     
     <category term="mysql" scheme="https://keafmd.top/tags/mysql/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>规范【锦上添花系列】</title>
-    <link href="https://keafmd.top/2021/10/25/%E8%A7%84%E8%8C%83%E3%80%90%E9%94%A6%E4%B8%8A%E6%B7%BB%E8%8A%B1%E7%B3%BB%E5%88%97%E3%80%91/"/>
-    <id>https://keafmd.top/2021/10/25/%E8%A7%84%E8%8C%83%E3%80%90%E9%94%A6%E4%B8%8A%E6%B7%BB%E8%8A%B1%E7%B3%BB%E5%88%97%E3%80%91/</id>
-    <published>2021-10-25T09:19:00.000Z</published>
-    <updated>2021-10-25T09:20:09.050Z</updated>
-    
-    <content type="html"><![CDATA[<div id="readmore-container"><blockquote><p><strong>我们提交代码时，有时可能没有什么格式，就简单记录下这次提交了哪部分代码，但是当我们看gitee和github上的提交时就会发现，在提交信息前会有一些单词，那就是用来标识这次提交代码的类别的。</strong></p></blockquote><p><strong>规范的好处：</strong></p><ul><li><strong>首先可读性强，不比深看代码，即可知道本次commit的作用</strong></li><li><strong>便于根据项目开发历史</strong></li><li><strong>提高项目整体质量，提高个人专业性</strong></li><li><strong>为Code Reviewing做准备</strong></li><li>…</li></ul><a id="more"></a><p><strong>规范有很多种，本文介绍目前使用最广泛的Angular 规范</strong><br><img   src="https://img-blog.csdnimg.cn/0210eac7b05f4bc38b0a04fcd36c9a96.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA54mb5ZOE5ZOE55qE5p-v5Y2X,size_20,color_FFFFFF,t_70,g_se,x_16" style="width: image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,tepx;height: t_Q1NETiBA54mb5ZOE5ZOE55qE5p-v5Y2X,size_20,color_FFFFFF,t_70,g_se,px;"  alt="在这里插入图片描述"></p><blockquote><p><strong>关于commit的类别，Angular 规范提到了七种标识：</strong></p></blockquote><ul><li><strong>feat：最常用的，开发新功能</strong></li><li><strong>fix：也常用，修复bug</strong></li><li><strong>docs：文档</strong></li><li><strong>style：常用，格式修改（不改变代码运行）</strong></li><li><strong>refactor：重构，改变代码结构，不是新功能也不是修复bug</strong></li><li><strong>test：测试</strong></li><li><strong>chore：维护，一些其它修改</strong></li></ul><blockquote><p><strong>版权声明：</strong><br><strong>原创博主：牛哄哄的柯南</strong><br><strong>博主原文链接：<span class="exturl"><a class="exturl__link"   href="https://keafmd.blog.csdn.net/" >https://keafmd.blog.csdn.net/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></strong></p></blockquote><p><strong>看完如果对你有帮助，感谢点击下面的==一键三连==支持！<br>[哈哈][抱拳]</strong><br><img src="https://img-blog.csdnimg.cn/e76df83ccd6d4e139968fbb68f7b1f99.png" alt="请添加图片描述"><img src="https://img-blog.csdnimg.cn/20201023201048810.gif#pic_center" alt="在这里插入图片描述"><br><strong>加油！</strong></p><p><strong>共同努力！</strong></p><p><strong>Keafmd</strong></p></div><script src="https://qiniu.techgrow.cn/js/readmore.js" type="text/javascript"></script><script>var isMobile = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i);if (!isMobile) {try {var plugin = new ReadmorePlugin();plugin.init({"id": "readmore-container","blogId": "63908-3467185019870-067","name": "牛哄哄的柯南","qrcode": "https://img-blog.csdnimg.cn/57e716984422402281cef814553b2ae9.png#pic_center","keyword": "柯南","lockToc": "yes","random": "1"});} catch(e) {console.warn(e.name + " : " + e.message);}}</script>]]></content>
-    
-    
-    <summary type="html">&lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;我们提交代码时，有时可能没有什么格式，就简单记录下这次提交了哪部分代码，但是当我们看gitee和github上的提交时就会发现，在提交信息前会有一些单词，那就是用来标识这次提交代码的类别的。&lt;/strong&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;&lt;strong&gt;规范的好处：&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;首先可读性强，不比深看代码，即可知道本次commit的作用&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;便于根据项目开发历史&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;提高项目整体质量，提高个人专业性&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;为Code Reviewing做准备&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;…&lt;/li&gt;
-&lt;/ul&gt;</summary>
-    
-    
-    
-    
-    <category term="git" scheme="https://keafmd.top/tags/git/"/>
     
   </entry>
   
