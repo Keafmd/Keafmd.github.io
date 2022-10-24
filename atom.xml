@@ -6,7 +6,7 @@
   <link href="https://keafmd.top/atom.xml" rel="self"/>
   
   <link href="https://keafmd.top/"/>
-  <updated>2022-09-23T06:29:57.191Z</updated>
+  <updated>2022-10-24T02:40:21.317Z</updated>
   <id>https://keafmd.top/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>组织机构列表转树形结构【Hutool工具类TreeUtil】</title>
+    <link href="https://keafmd.top/2022/10/24/%E7%BB%84%E7%BB%87%E6%9C%BA%E6%9E%84%E5%88%97%E8%A1%A8%E8%BD%AC%E6%A0%91%E5%BD%A2%E7%BB%93%E6%9E%84%E3%80%90Hutool%E5%B7%A5%E5%85%B7%E7%B1%BBTreeUtil%E3%80%91/"/>
+    <id>https://keafmd.top/2022/10/24/%E7%BB%84%E7%BB%87%E6%9C%BA%E6%9E%84%E5%88%97%E8%A1%A8%E8%BD%AC%E6%A0%91%E5%BD%A2%E7%BB%93%E6%9E%84%E3%80%90Hutool%E5%B7%A5%E5%85%B7%E7%B1%BBTreeUtil%E3%80%91/</id>
+    <published>2022-10-24T02:39:22.000Z</published>
+    <updated>2022-10-24T02:40:21.317Z</updated>
+    
+    <content type="html"><![CDATA[<div id="readmore-container">        <h1 id="问题引入"   >          <a href="#问题引入" class="heading-link"><i class="fas fa-link"></i></a><a href="#问题引入" class="headerlink" title="问题引入"></a>问题引入</h1>      <blockquote><p><strong>我们把单位表的信息根据上下级转化为树形结构输出展示，应该是很常见的，我们可以写递归自己去查，今天我们介绍的是使用Hutool的工具类TreeUtil来实现，只能说是十分之方便快捷简单。</strong></p></blockquote>        <h1 id="具体操作"   >          <a href="#具体操作" class="heading-link"><i class="fas fa-link"></i></a><a href="#具体操作" class="headerlink" title="具体操作"></a>具体操作</h1>      <a id="more"></a>        <h2 id="引入依赖"   >          <a href="#引入依赖" class="heading-link"><i class="fas fa-link"></i></a><a href="#引入依赖" class="headerlink" title="引入依赖"></a>引入依赖</h2>      <figure class="highlight xml"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>cn.hutool<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>hutool-all<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.8.6<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></div></figure>        <h2 id="根据业务查出List"   >          <a href="#根据业务查出List" class="heading-link"><i class="fas fa-link"></i></a><a href="#根据业务查出List" class="headerlink" title="根据业务查出List"></a>根据业务查出List</h2>      <figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//根据业务查出List</span></span><br><span class="line">List&lt;DeptEntity&gt; deptList = deptMapper.getDeptList();</span><br></pre></td></tr></table></div></figure>        <h2 id="List转树形结构"   >          <a href="#List转树形结构" class="heading-link"><i class="fas fa-link"></i></a><a href="#List转树形结构" class="headerlink" title="List转树形结构"></a>List转树形结构</h2>      <figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//配置类</span></span><br><span class="line">TreeNodeConfig treeNodeConfig = <span class="keyword">new</span> TreeNodeConfig();</span><br><span class="line"><span class="comment">//主键</span></span><br><span class="line">treeNodeConfig.setIdKey(<span class="string">&quot;id&quot;</span>);</span><br><span class="line">treeNodeConfig.setNameKey(<span class="string">&quot;name&quot;</span>);</span><br><span class="line"><span class="comment">//标识父节点的id</span></span><br><span class="line">treeNodeConfig.setParentIdKey(<span class="string">&quot;parent&quot;</span>);</span><br><span class="line"><span class="comment">//单位级别相同的会有优先级排序，这个Weight就是</span></span><br><span class="line">treeNodeConfig.setWeightKey(<span class="string">&quot;order&quot;</span>);</span><br><span class="line"><span class="comment">// 最大递归深度</span></span><br><span class="line">treeNodeConfig.setDeep(<span class="number">5</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//构建树形</span></span><br><span class="line"><span class="comment">//标识顶级单位的ID，实践证明null也是可以的</span></span><br><span class="line">String rootId = <span class="string">&quot;0&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//deptList 就是上面根据业务查出来的List</span></span><br><span class="line">List&lt;Tree&lt;String&gt;&gt; treeNodes = TreeUtil.build(deptList , rootId, treeNodeConfig,</span><br><span class="line">        (treeNode, tree) -&gt; &#123;</span><br><span class="line">        <span class="comment">//treeNode指的就是DeptEntity，也就是组织实体类</span></span><br><span class="line">            tree.setId(treeNode.getId());</span><br><span class="line">            tree.setParentId(treeNode.getParent());</span><br><span class="line">            <span class="comment">//这里就是上面表示的排序</span></span><br><span class="line">            tree.setWeight(treeNode.getOrder());</span><br><span class="line">            tree.setName(treeNode.getName());</span><br><span class="line"></span><br><span class="line"><span class="comment">// 扩展属性 ...</span></span><br><span class="line"><span class="comment">//还可以添加一些自定义key的属性，例如关联上部门上的人员</span></span><br><span class="line">tree.putExtra(<span class="string">&quot;people&quot;</span>, treeNode.getPeople());</span><br><span class="line"><span class="comment">//tree.putExtra(&quot;other&quot;, new Object());</span></span><br><span class="line">        &#125;</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">//最后得到的treeNodes就是我们想要的树形结构</span></span><br><span class="line"><span class="keyword">return</span> treeNodes;</span><br></pre></td></tr></table></div></figure><blockquote><p><strong>这样就得到一个树形的组织机构树了，只要配置类和不同的数据库做对应即可。</strong></p></blockquote><blockquote><p><strong>版权声明：</strong><br><strong>原创博主：牛哄哄的柯南</strong><br><strong>博主原文链接：<span class="exturl"><a class="exturl__link"   href="https://keafmd.blog.csdn.net/" >https://keafmd.blog.csdn.net/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span><br>个人博客链接：<span class="exturl"><a class="exturl__link"   href="https://www.keafmd.top/" >https://www.keafmd.top/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></strong></p></blockquote><p><strong>看完如果对你有帮助，感谢点击下面的点赞支持！<br>[哈哈][抱拳]</strong><br><img src="https://img-blog.csdnimg.cn/20201023201048810.gif#pic_center" alt="在这里插入图片描述"><br><strong>加油！</strong></p><p><strong>共同努力！</strong></p><p><strong>Keafmd</strong></p></div><script src="https://qiniu.techgrow.cn/js/readmore.js" type="text/javascript"></script><script>var isMobile = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i);if (!isMobile) {try {var plugin = new ReadmorePlugin();plugin.init({"id": "readmore-container","blogId": "63908-3467185019870-067","name": "牛哄哄的柯南","qrcode": "https://img-blog.csdnimg.cn/57e716984422402281cef814553b2ae9.png#pic_center","keyword": "柯南","lockToc": "yes","random": "1"});} catch(e) {console.warn(e.name + " : " + e.message);}}</script>]]></content>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;问题引入&quot;   &gt;
+          &lt;a href=&quot;#问题引入&quot; class=&quot;heading-link&quot;&gt;&lt;i class=&quot;fas fa-link&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;a href=&quot;#问题引入&quot; class=&quot;headerlink&quot; title=&quot;问题引入&quot;&gt;&lt;/a&gt;问题引入&lt;/h1&gt;
+      &lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;我们把单位表的信息根据上下级转化为树形结构输出展示，应该是很常见的，我们可以写递归自己去查，今天我们介绍的是使用Hutool的工具类TreeUtil来实现，只能说是十分之方便快捷简单。&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+        &lt;h1 id=&quot;具体操作&quot;   &gt;
+          &lt;a href=&quot;#具体操作&quot; class=&quot;heading-link&quot;&gt;&lt;i class=&quot;fas fa-link&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;a href=&quot;#具体操作&quot; class=&quot;headerlink&quot; title=&quot;具体操作&quot;&gt;&lt;/a&gt;具体操作&lt;/h1&gt;</summary>
+    
+    
+    
+    
+    <category term="Hutool" scheme="https://keafmd.top/tags/Hutool/"/>
+    
+  </entry>
   
   <entry>
     <title>无重复字符的最长子串（力扣中等难度）</title>
@@ -540,29 +566,6 @@
     
     
     <category term="每天进步一点点系列" scheme="https://keafmd.top/tags/%E6%AF%8F%E5%A4%A9%E8%BF%9B%E6%AD%A5%E4%B8%80%E7%82%B9%E7%82%B9%E7%B3%BB%E5%88%97/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>使用LamdbaUpdateWrapper的setSql作用及风险</title>
-    <link href="https://keafmd.top/2022/04/12/%E4%BD%BF%E7%94%A8LamdbaUpdateWrapper%E7%9A%84setSql%E4%BD%9C%E7%94%A8%E5%8F%8A%E9%A3%8E%E9%99%A9/"/>
-    <id>https://keafmd.top/2022/04/12/%E4%BD%BF%E7%94%A8LamdbaUpdateWrapper%E7%9A%84setSql%E4%BD%9C%E7%94%A8%E5%8F%8A%E9%A3%8E%E9%99%A9/</id>
-    <published>2022-04-12T10:10:34.000Z</published>
-    <updated>2022-04-18T07:42:42.969Z</updated>
-    
-    <content type="html"><![CDATA[<div id="readmore-container">        <h1 id="问题引入"   >          <a href="#问题引入" class="heading-link"><i class="fas fa-link"></i></a><a href="#问题引入" class="headerlink" title="问题引入"></a>问题引入</h1>      <blockquote><p>先思考下：我们要对数据库里面的某条数据进行更新，并且想要在某个字段原先的基础上修改，我们怎么办？</p></blockquote><a id="more"></a><blockquote><p>正常的情况下，我们需要先查出来再更新，可就是想直接更新，那就需要去Mapper中写sql，就为了一个字段感觉费劲，在这种情况下使用LamdbaUpdateWrapper的setSql()方法即可。</p></blockquote><figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//把num字段加5</span></span><br><span class="line">LambdaUpdateWrapper&lt;User&gt; updateWrapper = Wrappers.&lt;User&gt;lambdaUpdate()</span><br><span class="line">.eq(User::getId, userId)</span><br><span class="line">.setSql(<span class="string">&quot;count = count + 5&quot;</span>);</span><br><span class="line"></span><br><span class="line">userService.update(updateWrapper);</span><br></pre></td></tr></table></div></figure><p>BUT，这样就会存在可能有风险，主要还是为了测试mybatis-plus，是否进行的防范，经过测试，并没有。</p><p>比如就使用最常见的 sleep()，把这部分加到sql段中 <code>+ sleep(5)</code></p><figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">LambdaUpdateWrapper&lt;User&gt; updateWrapper = Wrappers.&lt;User&gt;lambdaUpdate()</span><br><span class="line">                .eq(User::getId, userId)</span><br><span class="line">                .setSql(<span class="string">&quot;count = count + 5 + sleep(5)&quot;</span>);</span><br></pre></td></tr></table></div></figure><p><img src="https://cdn.jsdelivr.net/gh/Keafmd/drawing-bed/img/image-20220418154212043.png" alt="image-20220418154212043"></p><p>不过话说回来，这也就是开发人员能接触到的，只是证明mybatis-plus并没有对setSql()进行过滤，是采取直接拼上去的方式。</p>        <h1 id="每日单词"   >          <a href="#每日单词" class="heading-link"><i class="fas fa-link"></i></a><a href="#每日单词" class="headerlink" title="每日单词"></a>每日单词</h1>      <p><img src="https://cdn.jsdelivr.net/gh/Keafmd/drawing-bed/img/image-20220418154234138.png" alt="image-20220418154234138"></p></div><script src="https://qiniu.techgrow.cn/js/readmore.js" type="text/javascript"></script><script>var isMobile = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i);if (!isMobile) {try {var plugin = new ReadmorePlugin();plugin.init({"id": "readmore-container","blogId": "63908-3467185019870-067","name": "牛哄哄的柯南","qrcode": "https://img-blog.csdnimg.cn/57e716984422402281cef814553b2ae9.png#pic_center","keyword": "柯南","lockToc": "yes","random": "1"});} catch(e) {console.warn(e.name + " : " + e.message);}}</script>]]></content>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;问题引入&quot;   &gt;
-          &lt;a href=&quot;#问题引入&quot; class=&quot;heading-link&quot;&gt;&lt;i class=&quot;fas fa-link&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;a href=&quot;#问题引入&quot; class=&quot;headerlink&quot; title=&quot;问题引入&quot;&gt;&lt;/a&gt;问题引入&lt;/h1&gt;
-      &lt;blockquote&gt;
-&lt;p&gt;先思考下：我们要对数据库里面的某条数据进行更新，并且想要在某个字段原先的基础上修改，我们怎么办？&lt;/p&gt;
-&lt;/blockquote&gt;</summary>
-    
-    
-    
-    
-    <category term="java" scheme="https://keafmd.top/tags/java/"/>
     
   </entry>
   
